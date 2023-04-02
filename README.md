@@ -8,21 +8,26 @@
 2. **Off-plocy**: 將策略網路分為目標策略和行為策略兩個網路，使它們同時與環境互動以取得兩者所採取的動作$A_{old}$、$A_{new}$。行為策略的$A_{old}$用於與環境互動取得經驗$E_{old}$，而目標策略則是透過$A_{old}$與$A_{new}$間的差異來決定$E_{old}$的重要度，以此更新目標策略的網路(差異越小$E_{old}$越重要)，這種方式也就是所謂的重要度採樣(**Important Sampling**)。當$A_{old}$與$A_{new}$差異太大時，則可以考慮將目標策略的網路轉移到行為策略的網路，使整個策略能夠利用舊有且與當前策略無關的經驗來更新。
 
 ### REINFORCE
-REINFORCE就是在策略梯度中最典型on-policy的範例，若要使用Monte-Carlo search來估計長期的動作價值來更新梯度，那麼訓練的過程就會變得極為緩慢，而且容易陷入局部最佳解。
+> REINFORCE就是在策略梯度中最典型on-policy的範例，若要使用Monte-Carlo search來估計長期的動作價值來更新梯度，那麼訓練的過程就會變得極為緩慢，而且容易陷入局部最佳解。
 
 ### Trust Region Policy Optimization, TRPO[[1]](https://arxiv.org/abs/1502.05477)
 
 
-TRPO則是一種Off-plocy的訓練框架，若再使用A2C將會同時存在三個網路(Actor目標策略網路、Actor行為策略網路與Critic網路)。而TRPO主要是將策略網路的動作劃分為期望值$A_{mu}$和標準差$A_{sigma}$，以此組合成動作的採樣空間$\theta$，也就是隨機梯度。如此一來，在設計梯度函數時便可以透過重要度採樣的比率與行為策略的優勢來更新目標策略以此解決了REINFORCE在on-policy上的缺點。可以參考下方的 surrogate gradient function。
-##### 補充：A2C算法也是為了補強REINFORCE因為樣本效率差而訓練緩慢的問題，藉由加入一個能預測後續獎勵回饋的神經網路(Critic)，便不需要再等到未來發生後才能開始更新策略，加快了訓練的時程。
+>TRPO則是一種Off-plocy的訓練框架，若再使用A2C將會同時存在三個網路(Actor目標策略網路、Actor行為策略網路與Critic網路)。而TRPO主要是將策略網路的動作劃分為期望值$A_{mu}$和標準差$A_{sigma}$，以此組合成動作的採樣空間$\theta$，也就是隨機梯度。如此一來，在設計梯度函數時便可以透過重要度採樣的比率與行為策略的優勢來更新目標策略以此解決了REINFORCE在on-policy上的缺點。可以參考下方的 surrogate gradient function。 
+>
+>![](https://i.imgur.com/eXSKZLh.png)
+>* 補充：A2C算法也是為了補強REINFORCE因為樣本效率差而訓練緩慢的問題，藉由加入一個能預測後續獎勵回饋的神經網路(Critic)，便不需要再等到未來發生後才能開始更新策略，加快了訓練的時程。
 
-![](https://i.imgur.com/eXSKZLh.png)
+
+
+
+
 
 
 
 
 ### Proximal Policy Optimization, PPO[[2]](https://arxiv.org/abs/1707.063477)
-PPO主要是透過clip surrogate來改進TRPO在更新網路時的缺點
-- **程式碼**: [PPO-tensorflow1.13.1.py](#code)
+> PPO主要是透過clip surrogate來改進TRPO在更新網路時的缺點
+> ![](https://i.imgur.com/34hiku1.png)
 
-![](https://i.imgur.com/34hiku1.png)
+**程式碼**: [PPO-tensorflow1.13.1.py](#code)
