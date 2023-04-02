@@ -93,7 +93,7 @@ class Actor:
         self.prob_dist = tf.contrib.distributions.Normal(self.mu, self.sigma) #build a stochastic distribution
         self.action = tf.clip_by_value(self.prob_dist._sample_n(1), action_space['low'], action_space['high']) #sampling a action from distribution and clip values.
         
-        #compute surrogate loss functions
+        #compute surrogate loss functions (the core of Proximal Policy Optimization)
         self.old_mu, self.old_sigma = tf.placeholder(tf.float32, [None, self.FLAGS.action_size], 'old_mu'), tf.placeholder(tf.float32, [None, self.FLAGS.action_size], 'old_sigma')
         self.old_prob_dist = tf.contrib.distributions.Normal(self.old_mu, self.old_sigma)
         self.old_action = tf.placeholder(tf.float32, [None, self.FLAGS.action_size], 'old_action')
