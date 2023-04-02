@@ -14,12 +14,16 @@
 
 
 - TRPO則是一種Off-plocy的訓練框架，若再使用A2C將會同時存在三個網路(Actor目標策略網路、Actor行為策略網路與Critic網路)。而TRPO主要是將策略網路的動作劃分為期望值$A_{mu}$和標準差$A_{sigma}$，以此組合成動作的採樣空間$\theta$，也就是隨機梯度。如此一來，在設計梯度函數時便可以透過重要度採樣的比率與行為策略的優勢來更新目標策略以此解決了REINFORCE在on-policy上的缺點。可以參考下方的 surrogate gradient function。 
+
 -![](https://i.imgur.com/eXSKZLh.png)
+
 - 補充：A2C算法也是為了補強REINFORCE因為樣本效率差而訓練緩慢的問題，藉由加入一個能預測後續獎勵回饋的神經網路(Critic)，便不需要再等到未來發生後才能開始更新策略，加快了訓練的時程。
 
 ### Proximal Policy Optimization, PPO[[2]](https://arxiv.org/abs/1707.063477)
 - PPO主要是透過限制surrogate的上下界來改進TRPO在更新網路時的缺點，避免因為更新幅度太大而導致模型崩潰。可以參考下方的 clipped surrogate gradient function。
+
 -![](https://i.imgur.com/34hiku1.png)
+
 - PPO目前還算是應用的主流，所以在這裡提供了一份由tensorflow基礎API建構的通用模板。整份程式是由物件導向所構成，包括經驗回放器、Actor、Critic及A2C框架，並以OpenAI GYM 的 LunarLanderContinuous-v2做個簡單釋例。
 
 **程式碼**: [PPO-tensorflow1.13.1.py](#code)
