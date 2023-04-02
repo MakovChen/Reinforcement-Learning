@@ -12,8 +12,9 @@ class ExperienceReplay():
     1. __experience: The memory of interacting experience.
     
     【method】
-    1. get_experiments: Return the cumulative experience of state, reward, action, dist, next_state and done sequentially.
-    2. addExperience: Add a sample of state, reward, action, dist, next_state and done to __experience. 
+    1. __init__: create a memory when this object has been build.
+    2. get_experiments: Return the cumulative experience of state, reward, action, dist, next_state and done sequentially.
+    3. addExperience: Add a sample of state, reward, action, dist, next_state and done to __experience. 
        //* definition of variables
        - state: list, [S1, S2...,Sm] (Information about the current environment)
        - reward: float, [R] (The points obtained for the actor's actions in the current state)
@@ -21,7 +22,7 @@ class ExperienceReplay():
        - dist: dictionary {'mu': [A1, A2...], 'sigma': [A1, A2...]}, (Action's measurement of stochastic distribution,contain mu and sigma.)
        - next_state: list, [S1, S2...,Sm] (New information about the environment after transition)
        - done: boolean (Showing the episode finished or not.)
-    3. clearExperience: Remove all experiences in __experience.
+    4. clearExperience: Remove all experiences in __experience.
   
     """
     def __init__(self):
@@ -43,12 +44,28 @@ class ExperienceReplay():
             self.__experience[col] = []
 
 class Actor:
+    """
+    // Used to build and access the actors' neural network
+    
+    【attributes】
+    * All the attributes defined the components of Acotor's network.
+    
+    【method】
+    1. __init__: defined the input, output and the gradients.
+    //* definition of variables
+       - action_space: dictionary, {'low': [A1bound, A2b...,Anb], 'high': [A1b, A2b...,Anb]} (The Upperbound and Lowerbound for each Action)
+       - FLAGS: object, (A variable for store A2C network hyperparameters)
+    2. _policy_estimator: defined the network Architecture and the flow of tensors.
+    
+    """
     def __init__(self, action_space, FLAGS):
         self.FLAGS = FLAGS
+        
         self.state = tf.placeholder(tf.float32, [None, self.FLAGS.state_size], "state")
         self.mu, self.sigma = self._policy_estimator()
         self.prob_dist = tf.contrib.distributions.Normal(self.mu, self.sigma)
         self.action = tf.clip_by_value(self.prob_dist._sample_n(1), action_space['low'], action_space['high'])
+        
         
         self.old_mu, self.old_sigma = tf.placeholder(tf.float32, [None, self.FLAGS.action_size], 'old_mu'), tf.placeholder(tf.float32, [None, self.FLAGS.action_size], 'old_sigma')
         self.old_prob_dist = tf.contrib.distributions.Normal(self.old_mu, self.old_sigma)
