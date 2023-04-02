@@ -18,16 +18,11 @@
 >![](https://i.imgur.com/eXSKZLh.png)
 >* 補充：A2C算法也是為了補強REINFORCE因為樣本效率差而訓練緩慢的問題，藉由加入一個能預測後續獎勵回饋的神經網路(Critic)，便不需要再等到未來發生後才能開始更新策略，加快了訓練的時程。
 
-
-
-
-
-
-
-
-
 ### Proximal Policy Optimization, PPO[[2]](https://arxiv.org/abs/1707.063477)
-> PPO主要是透過clip surrogate來改進TRPO在更新網路時的缺點
+> PPO主要是透過限制surrogate的上下界來改進TRPO在更新網路時的缺點，避免因為更新幅度太大而導致模型崩潰。可以參考下方的 clipped surrogate gradient function。
+> 
 > ![](https://i.imgur.com/34hiku1.png)
+> 
+> PPO目前還算是應用的主流，所以在這裡提供了一份由tensorflow基本API建構的模板。整份程式是由物件導向所構成，包括經驗回放器、Actor、Critic及A2C框架，並以OpenAI GYM 的 LunarLanderContinuous-v2做個簡單釋例。
 
 **程式碼**: [PPO-tensorflow1.13.1.py](#code)
