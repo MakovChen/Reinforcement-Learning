@@ -106,26 +106,36 @@ class Actor:
         self.train_op = tf.train.AdamOptimizer(self.FLAGS.learning_rate_Actor).minimize(self.loss)
         
     def _policy_estimator(self):
-        with tf.name_scope('mu_sigma'):
-            DIM_1, DIM_2, DIM_3 = 64, 64, 64
-            W1 = tf.get_variable('W1_mu', shape=(self.FLAGS.state_size, DIM_1), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / self.FLAGS.state_size)))
-            W2 = tf.get_variable('W2_mu', shape=(DIM_1, DIM_2), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_1)))
-            W3 = tf.get_variable('W3_mu', shape=(DIM_2, DIM_3), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_2)))
-            W4 = tf.get_variable('W4_mu', shape=(DIM_3, self.FLAGS.action_size), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_3)))
-            b1 = tf.get_variable('b1_mu', shape=(DIM_1), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / self.FLAGS.state_size)))
-            b2 = tf.get_variable('b2_mu', shape=(DIM_2), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_1)))
-            b3 = tf.get_variable('b3_mu', shape=(DIM_3), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_2)))
+        #setting the initialize weights and the amount of units for each layer.
+        DIM_1, DIM_2, DIM_3 = 64, 64, 64
+        inits = [tf.random_normal_initializer(stddev=np.sqrt(1 / self.FLAGS.state_size)),
+                 tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_1)),
+                 tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_2)),
+                 tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_3))]
+                 
+        #Connecting Network(for generate mu)
+        with tf.name_scope('mu'):
+            W1, W2, W3, W4 = tf.get_variable('W1_mu', shape=(self.FLAGS.state_size, DIM_1), initializer = inits[0]),
+                             tf.get_variable('W2_mu', shape=(DIM_1, DIM_2), initializer = inits[1]),
+                             tf.get_variable('W3_mu', shape=(DIM_2, DIM_3), initializer = inits[2]),
+                             tf.get_variable('W4_mu', shape=(DIM_3, self.FLAGS.action_size), initializer = inits[3])
+            b1, b2, b3 = tf.get_variable('b1_mu', shape=(DIM_1), initializer=inits[0]),
+                         tf.get_variable('b2_mu', shape=(DIM_2), initializer=inits[1]),
+                         tf.get_variable('b3_mu', shape=(DIM_3), initializer=inits[2])
             h1 = tf.nn.relu(tf.matmul(self.state, W1) + b1)
             h2 = tf.nn.relu(tf.matmul(h1, W2) + b2)
             h3 = tf.nn.relu(tf.matmul(h2, W3) + b3)
             mu = tf.squeeze(tf.matmul(h3, W4))
-            W1 = tf.get_variable('W1_sigma', shape=(self.FLAGS.state_size, DIM_1), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / self.FLAGS.state_size)))
-            W2 = tf.get_variable('W2_sigma', shape=(DIM_1, DIM_2), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_1)))
-            W3 = tf.get_variable('W3_sigma', shape=(DIM_2, DIM_3), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_2)))
-            W4 = tf.get_variable('W4_sigma', shape=(DIM_3, self.FLAGS.action_size), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_3)))
-            b1 = tf.get_variable('b1_sigma', shape=(DIM_1), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / self.FLAGS.state_size)))
-            b2 = tf.get_variable('b2_sigma', shape=(DIM_2), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_1)))
-            b3 = tf.get_variable('b3_sigma', shape=(DIM_3), initializer=tf.random_normal_initializer(stddev=np.sqrt(1 / DIM_2)))
+            
+        #Connecting Network(for generate sigma)
+        with tf.name_scope('sigma'):
+            W1, W2, W3, W4 = tf.get_variable('W1_sigma', shape=(self.FLAGS.state_size, DIM_1), initializer = inits[0]),
+                             tf.get_variable('W2_sigma', shape=(DIM_1, DIM_2), initializer = inits[1]),
+                             tf.get_variable('W3_sigma', shape=(DIM_2, DIM_3), initializer = inits[2]),
+                             tf.get_variable('W4_sigma', shape=(DIM_3, self.FLAGS.action_size), initializer = inits[3])
+            b1, b2, b3 = tf.get_variable('b1_sigma', shape=(DIM_1), initializer=inits[0]),
+                         tf.get_variable('b2_sigma', shape=(DIM_2), initializer=inits[1]),
+                         tf.get_variable('b3_sigma', shape=(DIM_3), initializer=inits[2])
             h1 = tf.nn.relu(tf.matmul(self.state, W1) + b1)
             h2 = tf.nn.relu(tf.matmul(h1, W2) + b2)
             h3 = tf.nn.relu(tf.matmul(h2, W3) + b3)
