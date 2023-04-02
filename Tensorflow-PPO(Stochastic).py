@@ -1,3 +1,29 @@
+"""
+Within 5k episodes, 2/4 attempts solved LunarLanderContinous-v2 (achieved 200 moving averaged rewards).
+
+Some findings are:
+
+It seems better to stop clearing the replay buffer at every episode
+It is slow to learn! (perhaps due to some parameters settings...)
+Learning rate is important - as we all know :-) (these results haven't fully optimized it yet)
+
+Main parameters are:
+γ\gammaγ: 0.99
+Replay buffer size: 30k
+LR for policy net: 2e-5
+LR for value net: 2e-4
+Batch size: 128
+Number of epochs: 32
+Number of hidden layers*: 3
+Number of hidden units*: 64
+Activation function:
+relu for policy net (actor)
+tanh for value net (critic)
+* for both value and policy net
+
+[reference: https://wandb.ai/takuyamagata/RLRG_AC/reports/Proximal-Policy-Optimization-PPO-on-OpenAI-Gym--VmlldzoxMTY2ODU]
+"""
+
 import numpy as np
 import tensorflow as tf #version1.13.1
 import gym
