@@ -87,12 +87,13 @@ class Actor:
     def __init__(self, action_space, FLAGS):
         self.FLAGS = FLAGS
         
-        self.state = tf.placeholder(tf.float32, [None, self.FLAGS.state_size], "state")
-        self.mu, self.sigma = self._policy_estimator()
-        self.prob_dist = tf.contrib.distributions.Normal(self.mu, self.sigma)
-        self.action = tf.clip_by_value(self.prob_dist._sample_n(1), action_space['low'], action_space['high'])
+        #take action
+        self.state = tf.placeholder(tf.float32, [None, self.FLAGS.state_size], "state") #input Interface
+        self.mu, self.sigma = self._policy_estimator() #forward propagation to get measurements
+        self.prob_dist = tf.contrib.distributions.Normal(self.mu, self.sigma) #build a stochastic distribution
+        self.action = tf.clip_by_value(self.prob_dist._sample_n(1), action_space['low'], action_space['high']) #sampling a action from distribution and clip values.
         
-        
+        #compute surrogate loss functions
         self.old_mu, self.old_sigma = tf.placeholder(tf.float32, [None, self.FLAGS.action_size], 'old_mu'), tf.placeholder(tf.float32, [None, self.FLAGS.action_size], 'old_sigma')
         self.old_prob_dist = tf.contrib.distributions.Normal(self.old_mu, self.old_sigma)
         self.old_action = tf.placeholder(tf.float32, [None, self.FLAGS.action_size], 'old_action')
@@ -100,6 +101,8 @@ class Actor:
         self.advantage = tf.placeholder(tf.float32, [None, 1], 'advantage')
         self.surrogate = self.ratio * self.advantage
         self.loss = -tf.minimum(self.surrogate ,tf.clip_by_value(self.ratio, 1 - self.FLAGS.epsilon, 1 + self.FLAGS.epsilon) * self.advantage)
+        
+        #the driver of backward propagation
         self.train_op = tf.train.AdamOptimizer(self.FLAGS.learning_rate_Actor).minimize(self.loss)
         
     def _policy_estimator(self):
