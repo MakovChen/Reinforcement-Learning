@@ -6,5 +6,5 @@ Store some templates for neural network modeling
 ## 策略梯度
 ### Proximal Policy Optimization, PPO
 - **資源**:
-[PPO-tensorflow1.13.1.py](#code)
-[1] Proximal Policy Optimization Algorithms: https://arxiv.org/abs/1707.06347
+    - **程式碼**: [PPO-tensorflow1.13.1.py](#code)
+    - **參考文獻**: Proximal Policy Optimization Algorithms: https://arxiv.org/abs/1707.06347
