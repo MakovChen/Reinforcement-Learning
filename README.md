@@ -54,3 +54,4 @@ PPO是TRPO的改進版本，兩者皆可以透過surrogate函數防止策略出�
 | 訓練框架         | Q-table     | Actor-Critic    | Actor-Critic         | Actor-Critic   |
 | Demo釋例         | -     | -     | -        | LunarLanderContinuous-v2   |
 | 檔名/版本         | -     | -     |-         | [PPO-tensorflow1.13.1.py]()   |
+| 平台         | -     | -     |-         | Colab   |
