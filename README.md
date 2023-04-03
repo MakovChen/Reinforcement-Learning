@@ -47,11 +47,9 @@ PPO是TRPO的改進版本，兩者皆可以透過surrogate函數防止策略出�
 
 ## 程式碼資源
 
-PPO目前還算是應用的主流，所以在這裡提供了一份由tensorflow基礎API建構的通用模板。整份程式是由物件導向所構成，包括經驗回放器、Actor、Critic及A2C框架，並以OpenAI GYM 的 LunarLanderContinuous-v2做個簡單釋例。
-**程式碼**: [PPO-tensorflow1.13.1.py]()
-
 |        模型     | `DQN`          |`DDPG`            |`TROP`                |`PPO`           |
 | :---:           | :---:            | :---:            | :---:            | :---:            |
 | 原則         | Value-based    | Value-based      | Policy-based         | Policy-based   |
 | 框架         | -     | -     | -        | Actor-Critic   |
+| 釋例         | -     | -     | -        | LunarLanderContinuous-v2   |
 | 檔案         | -     | -     |-         | [PPO-tensorflow1.13.1.py]()   |
