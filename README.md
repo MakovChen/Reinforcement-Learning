@@ -47,10 +47,10 @@ PPO是TRPO的改進版本，兩者皆可以透過surrogate函數防止策略出�
 
 ## 程式碼資源
 
-|        模型     | `DQN`          |`DDPG`            |`TROP`                |`PPO`           |
+|        模型     | `DQN`          |`DDPG`            |`TRPO`                |`PPO`           |
 | :---:           | :---:            | :---:            | :---:            | :---:            |
 | 原則         | Value-based    | Value-based      | Policy-based         | Policy-based   |
 | 梯度         | Deterministic    | Deterministic      | Stochastic         | Stochastic   |
-| 框架         | -     | -     | -        | Actor-Critic   |
+| 框架         | Basic     | Actor-Critic    | Actor-Critic         | Actor-Critic   |
 | 釋例         | -     | -     | -        | LunarLanderContinuous-v2   |
 | 檔案         | -     | -     |-         | [PPO-tensorflow1.13.1.py]()   |
