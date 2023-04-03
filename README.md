@@ -52,7 +52,6 @@ PPO目前還算是應用的主流，所以在這裡提供了一份由tensorflow�
 
 |        模型     | `DQN`          |`DDPG`            |`TROP`                |`PPO`           |
 | :---:           | :---:            | :---:            | :---:            | :---:            |
-| 訓練原則         | Value-based    | Value-based      | Policy-based         | Policy-based   |
-| :---:           | :---:            | :---:            | :---:            | :---:            |
-| 程式檔         | (無)     | (無)       | (無)         | [PPO-tensorflow1.13.1.py]()   |
-| :---:           | :---:            | :---:            | :---:            | :---:            |
+| 原則         | Value-based    | Value-based      | Policy-based         | Policy-based   |
+| 框架         | -     | -     | -        | Actor-Critic   |
+| 檔案         | -     | -     |-         | [PPO-tensorflow1.13.1.py]()   |
