@@ -6,6 +6,11 @@
 
 - [背景](#background)
 - [相關的研究進展](#install)
+  - 價值梯度
+  - 策略梯度
+    - REINFORCE
+    - TRPO
+    - PPO
 - [程式碼與內容說明](#install)
 
 
